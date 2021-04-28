@@ -7,50 +7,57 @@ from io import StringIO
 
 BATTERY_LIFE = 10000
 
+LEFT = 0
+DOWN = 1
+RIGHT = 2
+UP = 3
+DIG = 4
+
+MAPS = {
+    '2x2': np.array([
+        [1, 1],
+        [1, 1]
+    ]),
+    '3x3': np.array([
+        [0, 0, 1],
+        [0, 3, 2],
+        [1, 2, 2]
+    ]),
+    '10x10': np.array([
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 3, 2, 0, 0, 0, 4, 0, 0],
+        [0, 0, 1, 2, 0, 0, 4, 5, 4, 0],
+        [0, 0, 0, 0, 0, 0, 0, 4, 0, 0],
+        [0, 1, 1, 0, 0, 0, 0, 0, 0, 0],
+        [0, 2, 2, 2, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 3, 2, 0],
+        [0, 1, 2, 2, 0, 0, 3, 3, 2, 0],
+        [0, 0, 3, 3, 0, 0, 0, 2, 2, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ])
+}
+
+
 class DiggerEnv(gym.Env):
     metadata = {'render.modes': ['human']}
 
     def __init__(self):
-        # init nutrients
-        # self.nutrients_orig = np.array([
-        #     [1, 1],
-        #     [1, 1]
-        # ])
-
-        # init nutrients
-        # self.nutrients_orig = np.array([
-        #     [0, 0, 1],
-        #     [0, 3, 2],
-        #     [1, 2, 2]
-        # ])
-
-        self.nutrients_orig = np.array([
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 3, 2, 0, 0, 0, 4, 0, 0],
-            [0, 0, 1, 2, 0, 0, 4, 5, 4, 0],
-            [0, 0, 0, 0, 0, 0, 0, 4, 0, 0],
-            [0, 1, 1, 0, 0, 0, 0, 0, 0, 0],
-            [0, 2, 2, 2, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 3, 2, 0],
-            [0, 1, 2, 2, 0, 0, 3, 3, 2, 0],
-            [0, 0, 3, 3, 0, 0, 0, 2, 2, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        ])
+        self.nutrients_orig = MAPS['10x10']
 
         # create a copy to decrement in the simulation
         self.nutrients = np.copy(self.nutrients_orig)
 
         # set size (assume square)
         self.dim = self.nutrients.shape[0]  # length of one dimension of the matrix
-        self.size = self.nutrients.size     # length of the entire matrix
+        self.size = self.nutrients.size  # length of the entire matrix
 
         # game variables
         self.battery = BATTERY_LIFE
         self.score = 0
 
         # init player loc
-        self.row = 0          # top-most cell
-        self.col = 0          # left-most cell
+        self.row = 0  # top-most cell
+        self.col = 0  # left-most cell
 
         # check for highest value
         highest_nutrient_val = self.nutrients.max()
@@ -58,7 +65,7 @@ class DiggerEnv(gym.Env):
         high = max(highest_nutrient_val, highest_robot_pos)
 
         # define spaces
-        shape = self.size + 1   # the flattened nutrient values grid plus one more slot for the robot position, also flattened
+        shape = self.size + 1  # the flattened nutrient values grid plus one more slot for the robot position, also flattened
         self.observation_space = spaces.Box(low=0, high=high, shape=(shape,), dtype=np.int)
         self.action_space = spaces.Discrete(5)  # left, down, right, up, dig
 
@@ -69,32 +76,27 @@ class DiggerEnv(gym.Env):
     def step(self, action):
         reward = 0
 
-        # left
-        if action == 0:
+        if action == LEFT:
             if self.col > 0:
                 self.battery -= 1
                 self.col -= 1
 
-        # down
-        if action == 1:
+        if action == DOWN:
             if self.row < self.nutrients.shape[0] - 1:
                 self.battery -= 1
                 self.row += 1
 
-        # right
-        if action == 2:
+        if action == RIGHT:
             if self.col < self.nutrients.shape[1] - 1:
                 self.battery -= 1
                 self.col += 1
 
-        # up
-        if action == 3:
+        if action == UP:
             if self.row > 0:
                 self.battery -= 1
                 self.row -= 1
 
-        # dig
-        if action == 4:
+        if action == DIG:
             self.battery -= 1
             if self.nutrients[self.row][self.col] > 0:
                 self.nutrients[self.row][self.col] -= 1
@@ -120,8 +122,8 @@ class DiggerEnv(gym.Env):
         self.last_action = None
         self.done = False
         self.battery = BATTERY_LIFE
-        self.row = 0          # top-most cell
-        self.col = 0          # left-most cell
+        self.row = 0  # top-most cell
+        self.col = 0  # left-most cell
         self.nutrients = np.copy(self.nutrients_orig)
         return self.bundle_observation()
 
@@ -137,7 +139,7 @@ class DiggerEnv(gym.Env):
                 ["Left", "Down", "Right", "Up", "Dig"][self.last_action]))
         else:
             outfile.write("\n")
-        outfile.write("\n".join(''.join(line) for line in desc)+"\n")
+        outfile.write("\n".join(''.join(line) for line in desc) + "\n")
 
     def robot_pos(self):
         return self.row * self.dim + self.col
