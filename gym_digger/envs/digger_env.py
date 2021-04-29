@@ -5,7 +5,7 @@ from gym import spaces
 from gym.utils import colorize
 from io import StringIO
 
-BATTERY_LIFE = 10000
+BATTERY_LIFE = 200
 
 LEFT = 0
 DOWN = 1
@@ -42,7 +42,7 @@ class DiggerEnv(gym.Env):
     metadata = {'render.modes': ['human']}
 
     def __init__(self):
-        self.nutrients_orig = MAPS['10x10']
+        self.nutrients_orig = MAPS['2x2']
 
         # create a copy to decrement in the simulation
         self.nutrients = np.copy(self.nutrients_orig)
@@ -70,30 +70,33 @@ class DiggerEnv(gym.Env):
         self.action_space = spaces.Discrete(5)  # left, down, right, up, dig
 
         # define vars
-        self.done = False
         self.last_action = None
 
     def step(self, action):
         reward = 0
 
         if action == LEFT:
+            self.battery -= 1
+            reward = -1
             if self.col > 0:
-                self.battery -= 1
                 self.col -= 1
 
         if action == DOWN:
+            self.battery -= 1
+            reward = -1
             if self.row < self.nutrients.shape[0] - 1:
-                self.battery -= 1
                 self.row += 1
 
         if action == RIGHT:
+            self.battery -= 1
+            reward = -1
             if self.col < self.nutrients.shape[1] - 1:
-                self.battery -= 1
                 self.col += 1
 
         if action == UP:
+            self.battery -= 1
+            reward = -1
             if self.row > 0:
-                self.battery -= 1
                 self.row -= 1
 
         if action == DIG:
@@ -106,21 +109,18 @@ class DiggerEnv(gym.Env):
                 reward = -1
 
         # check done conditions
+        done = False
         if self.battery == 0 or self.nutrients.sum() == 0:
-            self.done = True
+            done = True
 
         # update values
         self.last_action = action
 
-        # bundle the observation up
-        bundled_observation = self.bundle_observation()
-
         # return observation, reward, done, info
-        return bundled_observation, reward, self.done, {'battery': self.battery}
+        return self.bundle_observation(), reward, done, {'battery': self.battery}
 
     def reset(self):
         self.last_action = None
-        self.done = False
         self.battery = BATTERY_LIFE
         self.row = 0  # top-most cell
         self.col = 0  # left-most cell
