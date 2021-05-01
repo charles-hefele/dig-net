@@ -15,7 +15,7 @@ import wandb
 ENV_NAME = 'Digger-v0'
 MAP_NAME = '2x2_e'
 
-wandb.init(project='digger',
+wandb.init(project='Macbook-Local-Run',
            group=MAP_NAME,
            job_type='6-values',
            settings=wandb.Settings(start_method="thread"))
@@ -53,5 +53,12 @@ dqn.fit(env, nb_steps=50000, visualize=False, verbose=2, callbacks=[WandbLogger(
 # After training is done, we save the final weights.
 dqn.save_weights(f'dqn_{ENV_NAME}_{MAP_NAME}_weights.h5f', overwrite=True)
 
+# Render the initial board state
+env.reset()
+env.render()
+
 # Finally, evaluate our algorithm.
 dqn.test(env, nb_episodes=1, visualize=True)
+
+# Terminate wandb
+wandb.finish()
