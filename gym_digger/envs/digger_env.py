@@ -5,7 +5,8 @@ from gym import spaces
 from gym.utils import colorize
 from io import StringIO
 
-BATTERY_LIFE = 200
+# BATTERY_LIFE = 200    # good for 2x2 and 3x3
+BATTERY_LIFE = 10000
 
 LEFT = 0
 DOWN = 1
@@ -14,14 +15,41 @@ UP = 3
 DIG = 4
 
 MAPS = {
-    '2x2': np.array([
+    '2x2_a': np.array([
         [1, 1],
         [1, 1]
     ]),
-    '3x3': np.array([
+    '2x2_b': np.array([
+        [2, 1],
+        [1, 2]
+    ]),
+    '2x2_c': np.array([
+        [3, 1],
+        [0, 2]
+    ]),
+    '2x2_d': np.array([
+        [3, 4],
+        [4, 2]
+    ]),
+    '2x2_e': np.array([
+        [3, 5],
+        [4, 2]
+    ]),
+    '3x3_a': np.array([
         [0, 0, 1],
-        [0, 3, 2],
-        [1, 2, 2]
+        [0, 1, 1],
+        [1, 1, 1]
+    ]),
+    '3x3_b': np.array([
+        [0, 2, 1],
+        [0, 1, 3],
+        [2, 3, 2]
+    ]),
+    '4x4_a': np.array([
+        [2, 2, 1, 3],
+        [1, 0, 0, 1],
+        [2, 0, 1, 1],
+        [1, 3, 1, 0]
     ]),
     '10x10': np.array([
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -41,8 +69,8 @@ MAPS = {
 class DiggerEnv(gym.Env):
     metadata = {'render.modes': ['human']}
 
-    def __init__(self):
-        self.nutrients_orig = MAPS['2x2']
+    def __init__(self, map_name):
+        self.nutrients_orig = MAPS[map_name]
 
         # create a copy to decrement in the simulation
         self.nutrients = np.copy(self.nutrients_orig)
