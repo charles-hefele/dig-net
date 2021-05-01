@@ -17,7 +17,8 @@ MAP_NAME = '2x2_e'
 
 wandb.init(project='digger',
            group=MAP_NAME,
-           job_type='6-values')
+           job_type='6-values',
+           settings=wandb.Settings(start_method="thread"))
 
 # Get the environment and extract the number of actions.
 env = gym.make(ENV_NAME, map_name=MAP_NAME)
