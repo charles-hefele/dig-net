@@ -104,6 +104,7 @@ class DiggerEnv(gym.Env):
     def reset(self):
         self.last_action = None
         self.battery = self.battery_init
+        self.score = 0
         self.row = 0  # top-most cell
         self.col = 0  # left-most cell
         self.nutrients = np.copy(self.nutrients_orig)
