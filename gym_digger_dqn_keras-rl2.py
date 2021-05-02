@@ -16,7 +16,8 @@ ENV_NAME = 'Digger-v0'
 MAP_NAME = '2x2_e'
 JOB_TYPE = '6-values'
 BATTERY = 200
-COMPLETION_BONUS = True
+COMPLETION_BONUS = 100
+BATTERY_PENALTY = 0
 
 SEQUENTIAL_MEMORY = 50000
 WINDOW_LENGTH = 1
@@ -35,7 +36,8 @@ print(f'SEQUENTIAL_MEMORY: {SEQUENTIAL_MEMORY}, WINDOW_LENGTH: {WINDOW_LENGTH}, 
       f'TARGET_MODEL_UPDATE: {TARGET_MODEL_UPDATE}, LEARNING_RATE: {LEARNING_RATE}, STEPS: {STEPS}')
 
 # Get the environment and extract the number of actions.
-env = gym.make(ENV_NAME, map_name=MAP_NAME, battery=BATTERY, completion_bonus=COMPLETION_BONUS)
+env = gym.make(ENV_NAME, map_name=MAP_NAME, battery=BATTERY, completion_bonus=COMPLETION_BONUS,
+               battery_penalty=BATTERY_PENALTY)
 nb_actions = env.action_space.n
 
 # Next, we build a very simple model.
