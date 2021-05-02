@@ -7,8 +7,8 @@ from io import StringIO
 from .maps import MAPS
 
 # constants
-# BATTERY_LIFE = 200    # good for 2x2 and 3x3
-BATTERY_LIFE = 10000
+BATTERY_LIFE = 200    # good for 2x2 and 3x3
+# BATTERY_LIFE = 10000
 
 # actions
 LEFT = 0
