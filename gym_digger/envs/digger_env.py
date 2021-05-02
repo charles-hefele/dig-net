@@ -102,7 +102,7 @@ class DiggerEnv(gym.Env):
         self.last_action = action
 
         # return observation, reward, done, info
-        return self.bundle_observation(), reward, done, {'battery': self.battery}
+        return self.bundle_observation(), reward, done, {'battery': self.battery, 'score': self.score}
 
     def reset(self):
         self.last_action = None
