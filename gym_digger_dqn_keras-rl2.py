@@ -21,7 +21,7 @@ WINDOW_LENGTH = 1
 STEPS_WARMUP = 10
 TARGET_MODEL_UPDATE = 1e-2
 LEARNING_RATE = 1e-3
-STEPS = 5000
+STEPS = 50000
 
 wandb.init(project='Macbook-Local-Run',
            group=MAP_NAME,
