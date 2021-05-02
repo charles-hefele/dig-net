@@ -6,10 +6,6 @@ from gym.utils import colorize
 from io import StringIO
 from .maps import MAPS
 
-# constants
-BATTERY_LIFE = 200    # good for 2x2 and 3x3
-# BATTERY_LIFE = 10000
-
 # actions
 LEFT = 0
 DOWN = 1
@@ -22,7 +18,7 @@ class DiggerEnv(gym.Env):
     metadata = {'render.modes': ['human']}
 
     def __init__(self, map_name, battery=10000, completion_bonus=True):
-        self.battery = battery
+        self.battery_init = self.battery = battery
         self.completion_bonus = completion_bonus
         self.nutrients_orig = MAPS[map_name]
 
@@ -106,7 +102,7 @@ class DiggerEnv(gym.Env):
 
     def reset(self):
         self.last_action = None
-        self.battery = BATTERY_LIFE
+        self.battery = self.battery_init
         self.row = 0  # top-most cell
         self.col = 0  # left-most cell
         self.nutrients = np.copy(self.nutrients_orig)
