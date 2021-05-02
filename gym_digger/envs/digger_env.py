@@ -21,7 +21,8 @@ DIG = 4
 class DiggerEnv(gym.Env):
     metadata = {'render.modes': ['human']}
 
-    def __init__(self, map_name, completion_bonus=True):
+    def __init__(self, map_name, battery=10000, completion_bonus=True):
+        self.battery = battery
         self.completion_bonus = completion_bonus
         self.nutrients_orig = MAPS[map_name]
 
@@ -33,7 +34,6 @@ class DiggerEnv(gym.Env):
         self.size = self.nutrients.size  # length of the entire matrix
 
         # game variables
-        self.battery = BATTERY_LIFE
         self.score = 0
 
         # init player loc
