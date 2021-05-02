@@ -12,13 +12,14 @@ from rl.memory import SequentialMemory
 from rl.callbacks import WandbLogger, FileLogger
 import wandb
 
+# environment settings
 ENV_NAME = 'Digger-v0'
 MAP_NAME = '2x2_e'
-JOB_TYPE = '6-values'
 BATTERY = 200
 COMPLETION_BONUS = 100
 BATTERY_PENALTY = 0
 
+# keras settings
 SEQUENTIAL_MEMORY = 50000
 WINDOW_LENGTH = 1
 STEPS_WARMUP = 10
@@ -26,14 +27,25 @@ TARGET_MODEL_UPDATE = 1e-2
 LEARNING_RATE = 1e-3
 STEPS = 50000
 
-wandb.init(project='Macbook-Local-Run',
+# wandb settings
+PROJECT = ENV_NAME
+GROUP = MAP_NAME
+JOB_TYPE = '6-values'
+
+# start wandb
+wandb.init(project=PROJECT,
            group=MAP_NAME,
            job_type=JOB_TYPE,
            settings=wandb.Settings(start_method="thread"))
 
 # Print the params
-print(f'SEQUENTIAL_MEMORY: {SEQUENTIAL_MEMORY}, WINDOW_LENGTH: {WINDOW_LENGTH}, STEPS_WARMUP: {STEPS_WARMUP},',
+print(f'ENV_NAME: {ENV_NAME}, MAP_NAME: {MAP_NAME}, BATTERY: {BATTERY}, COMPLETION_BONUS: {COMPLETION_BONUS}, '
+      f'BATTERY_PENALTY: {BATTERY_PENALTY}')
+
+print(f'SEQUENTIAL_MEMORY: {SEQUENTIAL_MEMORY}, WINDOW_LENGTH: {WINDOW_LENGTH}, STEPS_WARMUP: {STEPS_WARMUP}, '
       f'TARGET_MODEL_UPDATE: {TARGET_MODEL_UPDATE}, LEARNING_RATE: {LEARNING_RATE}, STEPS: {STEPS}')
+
+print(f'PROJECT: {PROJECT}, GROUP: {GROUP}, JOB_TYPE: {JOB_TYPE}')
 
 # Get the environment and extract the number of actions.
 env = gym.make(ENV_NAME, map_name=MAP_NAME, battery=BATTERY, completion_bonus=COMPLETION_BONUS,
