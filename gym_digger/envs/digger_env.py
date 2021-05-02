@@ -21,7 +21,8 @@ DIG = 4
 class DiggerEnv(gym.Env):
     metadata = {'render.modes': ['human']}
 
-    def __init__(self, map_name):
+    def __init__(self, map_name, completion_bonus=True):
+        self.completion_bonus = completion_bonus
         self.nutrients_orig = MAPS[map_name]
 
         # create a copy to decrement in the simulation
@@ -90,7 +91,11 @@ class DiggerEnv(gym.Env):
 
         # check done conditions
         done = False
-        if self.battery == 0 or self.nutrients.sum() == 0:
+        if self.nutrients.sum() == 0:   # all nutrients have been dug
+            if self.completion_bonus:
+                reward = 100
+            done = True
+        elif self.battery == 0:  # the battery was depleted
             done = True
 
         # update values
