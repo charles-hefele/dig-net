@@ -28,6 +28,10 @@ wandb.init(project='Macbook-Local-Run',
            job_type=JOB_TYPE,
            settings=wandb.Settings(start_method="thread"))
 
+# Print the params
+print(f'SEQUENTIAL_MEMORY: {SEQUENTIAL_MEMORY}, WINDOW_LENGTH: {WINDOW_LENGTH}, STEPS_WARMUP: {STEPS_WARMUP},',
+      f'TARGET_MODEL_UPDATE: {TARGET_MODEL_UPDATE}, LEARNING_RATE: {LEARNING_RATE}, STEPS: {STEPS}')
+
 # Get the environment and extract the number of actions.
 env = gym.make(ENV_NAME, map_name=MAP_NAME)
 nb_actions = env.action_space.n
