@@ -18,6 +18,7 @@ MAP_NAME = '2x2_e'
 BATTERY = 200
 COMPLETION_BONUS = 100
 BATTERY_PENALTY = 0
+FILE = f'dqn_{ENV_NAME}_{MAP_NAME}_weights.h5f'
 
 # keras settings
 SEQUENTIAL_MEMORY = 50000
@@ -76,7 +77,7 @@ dqn.compile(Adam(lr=LEARNING_RATE), metrics=['mae'])
 dqn.fit(env, nb_steps=STEPS, visualize=False, verbose=2, callbacks=[WandbLogger(), FileLogger('results.json')])
 
 # save the weights
-dqn.save_weights(f'dqn_{ENV_NAME}_{MAP_NAME}_weights.h5f', overwrite=True)
+dqn.save_weights(FILE, overwrite=True)
 
 # render the initial environment state
 env.reset()
