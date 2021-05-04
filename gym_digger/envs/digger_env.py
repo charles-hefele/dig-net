@@ -118,8 +118,7 @@ class DiggerEnv(gym.Env):
         desc[self.row][self.col] = colorize(desc[self.row][self.col], "red", highlight=True)
 
         if self.last_action is not None:
-            outfile.write("  ({})\n".format(
-                ["Left", "Down", "Right", "Up", "Dig"][self.last_action]))
+            outfile.write("({})\n".format(["Left", "Down", "Right", "Up", "Dig"][self.last_action]))
         else:
             outfile.write("\n")
         outfile.write("\n".join(''.join(line) for line in desc) + "\n")
