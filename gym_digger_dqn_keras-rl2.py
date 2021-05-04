@@ -80,6 +80,7 @@ dqn.fit(env, nb_steps=STEPS, visualize=False, verbose=2, callbacks=[WandbLogger(
 dqn.save_weights(OUT_FILE, overwrite=True)
 
 # render the initial environment state
+print('Initial board state', end='')
 env.reset()
 env.render()
 
