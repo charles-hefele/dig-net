@@ -2,8 +2,20 @@ import gym
 import gym_digger
 import time
 from IPython.display import clear_output
+import tensorflow as keras
+from keras.models import Sequential
+from keras.layers import Dense
+
+model = Sequential()
+model.add(Dense(6, input_dim=5, activation='relu'))
+model.add(Dense(6, activation='relu'))
+model.add(Dense(5, activation='softmax'))
+model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+model.fit(X, y, epochs=150, batch_size=10)
 
 env = gym.make('Digger-v0')
+
+keras.Model()
 
 for episode in range(5):
     env.reset()

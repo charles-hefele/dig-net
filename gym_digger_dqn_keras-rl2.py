@@ -29,7 +29,7 @@ LEARNING_RATE = 1e-3
 STEPS = 50000
 
 # wandb settings
-PROJECT = ENV_NAME
+PROJECT = 'Macbook-Local-Run'
 GROUP = MAP_NAME
 JOB_TYPE = '6-values'
 
