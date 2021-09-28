@@ -7,4 +7,4 @@ The objective is to model the neural network such that an optimal 'travel' and '
 
 The inspiration behind this project is the Mars _Perseverance_ rover, which has a mission to search for signs of ancient life. I imagine such an agent trained with RL could be useful in programming what the rover's daily schedule should be in order to optimize travel time and battery consumption.
 
-I've tried a variety of different approaches to find an optimal solution to this, with the most optimal thus far being found in gym_digger_dqn_keras-rl2.py.
+I've tried a variety of different approaches to find an optimal solution to this, with the most optimal thus far being found in gym_digger_dqn_keras-rl2.py being trained against the 4x4_h map. It is important to note that in order to perform the training more efficiently, this file was converted to a Google Colab notebook and trained on the Python 3 Google Compute Engine backend with a runtime of approximately 1 hour.
